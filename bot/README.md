@@ -90,6 +90,7 @@ The file `bot/local.env` holds the same keys and is used on a local machine.
 | `CROSSMOD_DATA_PATH` | the file the state is stored in, `data/state.json` |
 | `CROSSMOD_PORT` | the port of the HTTP endpoints, `8080` |
 | `CROSSMOD_OFFLINE` | `true` starts the bot without a connection to Discord |
+| `CROSSMOD_MEMBERS_INTENT` | `false` leaves out the privileged members intent |
 | `CROSSMOD_PUBLIC_URL` | the address the bot is reachable at |
 
 **The guild id matters.** Without it the commands are registered globally and
@@ -97,6 +98,33 @@ Discord needs up to an hour to publish them everywhere. With it they appear in
 the server right away. The id is the first number of the channel link of the
 server, right click the channel and copy the id with the developer mode turned
 on.
+
+## The permissions of the channels
+
+A channel may not give the permission to send messages to `@everyone`, and the
+role of the bot does not get that permission back in the channel. The bot needs
+its own entry in the permissions of the channel:
+
+| Permission | For which channel |
+|---|---|
+| Send Messages | every channel the bot writes in |
+| View Channel | every channel the bot reads |
+| Manage Channels | the member counter, the bot renames it |
+| Manage Roles | the verified role and the reaction roles |
+
+The bot creates its three channels itself, with the permissions in place. They
+sit at the top of the server, because a channel inside a category that denies
+the management of the channels to `@everyone` may not be created by the bot.
+
+## How the bot talks to Discord
+
+The bot reads everything over the REST interface of Discord and uses the
+gateway only for the events - the joins, the reactions and the commands. The
+cache of the gateway is not used for a single lookup, it is not always filled
+and it would only hide a mistake.
+
+The bot also waits for the `Ready` event of the gateway before it registers the
+commands, Discord refuses the registration before that.
 
 ## The commands
 
@@ -172,7 +200,29 @@ as `CROSSMOD_GITHUB_SECRET` the bot checks the signature of the request.
 The bot is a plain container, so every host that runs Docker works. The
 free tiers of Railway, Koyeb and Fly.io are enough for a bot of this size.
 
-### Railway
+### With the command line of Railway
+
+The command line of Railway uploads the folder it stands in, a repository on
+GitHub is not needed.
+
+```bash
+cd bot
+railway login
+railway init
+railway up
+railway variables set CROSSMOD_DISCORD_TOKEN=... CROSSMOD_API_KEY=... CROSSMOD_GUILD_ID=...
+railway domain
+```
+
+`railway up` finds the `Dockerfile` of the folder and builds the image. The
+address that `railway domain` prints is the address the mod and the workflow
+of the repository need.
+
+The state of the bot is written into `/app/data`. Add a volume on that path in
+the dashboard of the service, otherwise the links of the members are lost with
+every deployment.
+
+### With the dashboard of Railway
 
 1. Put the repository on GitHub.
 2. Create a project on [railway.app](https://railway.app) and add the

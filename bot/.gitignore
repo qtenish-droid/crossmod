@@ -1,0 +1,9 @@
+# The build output of the bot, it is built in the container.
+bin/
+obj/
+
+# The state of the bot, it lives in a volume.
+data/
+
+# The settings of the machine, they never leave it.
+local.env
