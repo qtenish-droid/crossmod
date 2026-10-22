@@ -1,0 +1,103 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+base {
+	archivesName = project.archives_base_name
+	version = project.mod_version
+}
+
+group = project.maven_group
+
+repositories {
+	// Mods in this project only depend on Minecraft, Fabric Loader and Fabric API,
+	// all of which Loom resolves from the Fabric maven automatically.
+}
+
+loom {
+	// The client-only code lives in its own source set so that the mod can never
+	// accidentally reference client classes from a dedicated server environment.
+	splitEnvironmentSourceSets()
+
+	runs {
+		client {
+			// A predictable window makes the interface easy to review at the
+			// same resolution while developing.
+			programArgs "--width", "1600", "--height", "900"
+
+			// Screenshot captures are taken in a real world so that the blur has
+			// a world frame to work with instead of the title panorama.
+			def quickWorld = System.getenv("CROSSMOD_QUICK_WORLD")
+			if (quickWorld != null && !quickWorld.isBlank()) {
+				programArgs "--quickPlaySingleplayer", quickWorld
+			}
+		}
+	}
+
+	mods {
+		"crossmod" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+	def modVersion = project.version
+
+	inputs.property "version", modVersion
+	inputs.property "minecraft_version", project.minecraft_version
+	inputs.property "loader_version", project.loader_version
+
+	filesMatching("fabric.mod.json") {
+		expand(
+			"version": modVersion,
+			"minecraft_version": project.minecraft_version,
+			"loader_version": project.loader_version
+		)
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = Integer.parseInt(project.java_version)
+	it.options.encoding = "UTF-8"
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(Integer.parseInt(project.java_version))
+	}
+
+	withSourcesJar()
+}
+
+jar {
+	def projectName = project.archives_base_name
+
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_${projectName}" }
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+
+	repositories {
+		// Maven repositories the finished artifact can be published to.
+	}
+}

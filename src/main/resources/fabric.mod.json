@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "crossmod",
+	"version": "${version}",
+	"name": "CrossMod",
+	"description": "CrossMod is an all-in-one PvP client for Minecraft: a fast, resolution independent glass interface with a framework for combat, performance and utility modules.",
+	"authors": [
+		"CrossMod Team"
+	],
+	"contact": {
+		"homepage": "https://github.com/crossmod/crossmod",
+		"sources": "https://github.com/crossmod/crossmod",
+		"issues": "https://github.com/crossmod/crossmod/issues",
+		"discord": "https://discord.gg/tDe4cZYyuV"
+	},
+	"license": "MIT",
+	"icon": "assets/crossmod/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"io.github.crossmod.client.CrossModClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"discord": "https://discord.gg/tDe4cZYyuV"
+			}
+		}
+	}
+}

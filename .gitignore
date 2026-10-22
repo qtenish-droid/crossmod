@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+out/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Runtime
+run/
+logs/
+*.log
+
+# The Discord bot
+bot/bin/
+bot/obj/
+bot/data/
+bot/local.env

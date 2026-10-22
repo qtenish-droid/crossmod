@@ -1,0 +1,46 @@
+name: Announce release
+
+# Posts a new release of the mod into the announcement channel of the server.
+# The bot needs the address of the bot and the shared secret, both are secrets
+# of the repository.
+on:
+  release:
+    types: [published]
+
+jobs:
+  announce:
+    name: Announce the release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build the message
+        id: payload
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+          NAME: ${{ github.event.release.name }}
+          BODY: ${{ github.event.release.body }}
+          URL: ${{ github.event.release.html_url }}
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+
+          print("payload=" + json.dumps({
+              "version": os.environ["VERSION"],
+              "title": os.environ["NAME"],
+              "changelog": os.environ["BODY"],
+              "url": os.environ["URL"],
+          }))
+          EOF
+
+      - name: Post the release
+        env:
+          CROSSMOD_BOT_URL: ${{ secrets.CROSSMOD_BOT_URL }}
+          CROSSMOD_API_KEY: ${{ secrets.CROSSMOD_API_KEY }}
+          PAYLOAD: ${{ steps.payload.outputs.payload }}
+        run: |
+          curl --fail --silent --show-error \
+            --request POST "$CROSSMOD_BOT_URL/api/publish" \
+            --header "Content-Type: application/json" \
+            --header "X-Api-Key: $CROSSMOD_API_KEY" \
+            --data "$PAYLOAD"
