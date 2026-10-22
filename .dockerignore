@@ -1,0 +1,15 @@
+# The build output of the mod and of the bot.
+build/
+.gradle/
+bot/bin/
+bot/obj/
+bot/data/
+
+# The settings of the machine, they never leave it.
+bot/local.env
+local.env
+
+# The archives and the logs.
+*.log
+*.zip
+*.jar
