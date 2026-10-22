@@ -36,6 +36,7 @@ public final class GuiSkinGenerator {
 
     private static final int SCALE = 4;
     private static final int ICON = 128;
+    private static final int HEADER_HEIGHT = 86;
 
     private GuiSkinGenerator() {
     }
@@ -51,7 +52,7 @@ public final class GuiSkinGenerator {
 
         write(output.resolve("panel_base.png"), 128, 128, GuiSkinGenerator::drawPanelBase);
         write(output.resolve("panel_border.png"), 128, 128, GuiSkinGenerator::drawPanelBorder);
-        write(output.resolve("header.png"), 256, 47 * SCALE, GuiSkinGenerator::drawHeader);
+        write(output.resolve("header.png"), 256, HEADER_HEIGHT * SCALE, GuiSkinGenerator::drawHeader);
         write(output.resolve("card_on.png"), 256, 49 * SCALE, (g, w, h) -> drawCard(g, w, h, true));
         write(output.resolve("card_off.png"), 256, 49 * SCALE, (g, w, h) -> drawCard(g, w, h, false));
         write(output.resolve("nav_pill.png"), 256, 21 * SCALE, GuiSkinGenerator::drawNavPill);
@@ -62,7 +63,6 @@ public final class GuiSkinGenerator {
         write(output.resolve("toggle_off.png"), 25 * SCALE, 13 * SCALE, (g, w, h) -> drawToggle(g, w, h, false));
         write(output.resolve("icon_tile.png"), 34 * SCALE, 34 * SCALE, GuiSkinGenerator::drawIconTile);
 
-        writeIcon(output, "logo.png", GuiSkinGenerator::drawLogo);
         writeIcon(output, "module_damage_tint.png", GuiSkinGenerator::drawDroplet);
         writeIcon(output, "module_clean_view.png", GuiSkinGenerator::drawEye);
         writeIcon(output, "module_crosshair_addons.png", GuiSkinGenerator::drawCrosshairAddons);
