@@ -56,7 +56,6 @@ public sealed class DiscordService : IHostedService {
 	public async Task StartAsync(CancellationToken cancellationToken) {
 		_client.InteractionCreated += OnInteractionCreated;
 		_client.UserJoined += OnUserJoined;
-		_client.UserLeft += OnUserLeft;
 		_client.ReactionAdded += OnReactionAdded;
 		_client.ReactionRemoved += OnReactionRemoved;
 		_client.Disconnected += OnDisconnected;
@@ -76,7 +75,6 @@ public sealed class DiscordService : IHostedService {
 		_logger.LogInformation("CrossMod is connected as {User}.", _client.CurrentUser?.Username ?? "unknown");
 
 		await RegisterCommandsAsync();
-		await BotServices.MemberCount.UpdateAsync();
 	}
 
 	/**
@@ -149,7 +147,7 @@ public sealed class DiscordService : IHostedService {
 	}
 
 	/**
-	 * Welists a member and updates the member counter.
+	 * Welists a member.
 	 *
 	 * @param member the member that joined
 	 */
@@ -159,18 +157,6 @@ public sealed class DiscordService : IHostedService {
 		} catch (Exception exception) {
 			_logger.LogError(exception, "The welcome message failed.");
 		}
-
-		await BotServices.MemberCount.UpdateAsync();
-	}
-
-	/**
-	 * Updates the member counter when a member leaves.
-	 *
-	 * @param guild the guild the member left
-	 * @param user  the member that left
-	 */
-	private async Task OnUserLeft(SocketGuild guild, SocketUser user) {
-		await BotServices.MemberCount.UpdateAsync();
 	}
 
 	/**

@@ -52,7 +52,6 @@ railway variable set CROSSMOD_DISCORD_TOKEN --stdin --service CrossMod --skip-de
 railway variable set CROSSMOD_API_KEY --stdin --service CrossMod --skip-deploys
 railway variable set CROSSMOD_GUILD_ID=1558722727542657134 --service CrossMod --skip-deploys
 railway variable set CROSSMOD_WELCOME_CHANNEL_ID=1562664187140907152 --service CrossMod --skip-deploys
-railway variable set CROSSMOD_MEMBER_COUNT_CHANNEL_ID=1562664625122705479 --service CrossMod --skip-deploys
 railway variable set CROSSMOD_ANNOUNCEMENT_CHANNEL_ID=1562664191318429717 --service CrossMod --skip-deploys
 railway variable set CROSSMOD_VERIFIED_ROLE_ID=1562655759479738388 --service CrossMod --skip-deploys
 railway variable set CROSSMOD_STAFF_ROLE_ID=1561282905743954000 --service CrossMod --skip-deploys

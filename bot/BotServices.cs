@@ -40,9 +40,6 @@ public static class BotServices {
 	/** The service that posts the announcements. */
 	public static AnnouncementService Announcements { get; private set; } = null!;
 
-	/** The service that keeps the member counter up to date. */
-	public static MemberCountService MemberCount { get; private set; } = null!;
-
 	/** The service that handles the reaction roles. */
 	public static ReactionRoleService ReactionRoles { get; private set; } = null!;
 
@@ -60,7 +57,6 @@ public static class BotServices {
 	 * @param mojang        the lookup of the Minecraft names
 	 * @param verification  the service that grants the verified role
 	 * @param announcements the service that posts the announcements
-	 * @param memberCount   the service that keeps the member counter up to date
 	 * @param reactionRoles the service that handles the reaction roles
 	 * @param welcome       the service that welcomes new members
 	 */
@@ -73,7 +69,6 @@ public static class BotServices {
 			MojangService mojang,
 			VerificationService verification,
 			AnnouncementService announcements,
-			MemberCountService memberCount,
 			ReactionRoleService reactionRoles,
 			WelcomeService welcome) {
 		Options = options;
@@ -84,7 +79,6 @@ public static class BotServices {
 		Mojang = mojang;
 		Verification = verification;
 		Announcements = announcements;
-		MemberCount = memberCount;
 		ReactionRoles = reactionRoles;
 		Welcome = welcome;
 	}

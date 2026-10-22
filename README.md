@@ -1,46 +1,48 @@
 # CrossMod
 
 CrossMod is an all in one PvP client for Minecraft. The current build is the
-visual shell: a full-window sheet of smoked glass with a hot pink accent, a
-labeled sidebar, a search and filter header and two columns of module cards.
+visual shell: a floating sheet of clear smoked glass with a hot pink accent, a
+labeled sidebar, a centred search and filter header and an empty two-column
+module grid.
 
 The project is a client only Fabric mod for **Minecraft 26.3**.
 
 ![The CrossMod interface over a blurred world](docs/screenshots/interface.png)
 
-*The shell fills the window with a narrow outer margin. The world behind it is
-captured, blurred and pushed towards a dark magenta, independently of the
+*The shell floats over the blurred world with breathing room around every edge.
+The search and filters sit in the centred header. The world behind it is
+captured, blurred and darkened with a neutral scrim, independently of the
 vanilla menu blur setting. The HUD is hidden while the shell is open.*
 
 ---
 
 ## Features
 
-* **A full-window glass shell** - a rounded panel sits four GUI units from every
-  window edge. Every surface is drawn from anti-aliased four-times textures, so
+* **A floating glass shell** - the rounded panel is scaled down as a whole and
+  centred, leaving clear breathing room between the interface and every edge of
+  the screen. Every surface is drawn from anti-aliased four-times textures, so
   the corners stay smooth at any GUI scale.
 * **A captured, heavily blurred backdrop** - the last world frame is downscaled,
-  box-blurred and drawn as an opaque first layer. A dark magenta scrim is applied
-  on top, so the glass stays readable and never depends on the user's
-  *Menu Background Blurriness* setting.
-* **Two proportional card columns** - 46 preview cards show the density, the
-  hierarchy and the styling of the finished list. The grid scrolls inside the
-  panel.
+  box-blurred and drawn as an opaque first layer. A neutral dark scrim is applied
+  on top, so the glass stays readable without taking on a red cast and never
+  depends on the user's *Menu Background Blurriness* setting.
+* **A centred header** - the search field sits in the upper middle of the panel,
+  the filter pills are centred underneath it and the close button sits in the
+  top-right corner. The sidebar starts below the header.
+* **Two proportional card columns** - the grid is ready for registered modules
+  and scrolls inside the panel. It is intentionally empty in this build.
 * **A labeled sidebar** - Modules, Settings, Social, Wardrobe and Profiles, with
   Edit HUD and the Discord link pinned to the bottom.
-* **A search and filter header** - search by name, then narrow the list with the
-  All, PvP, HUD, Visuals and Player filters, each with its own count.
+* **A clear search and filter header** - search by name, then narrow the list
+  with the All, PvP, HUD, Visuals and Player filters, each with its own count.
 * **Clear card states** - the icon, border and toggle turn hot pink when a card
-  is on and stay gray when it is off. The previews can be clicked and toggled
-  without touching the module registry.
+  is on and stay gray when it is off.
 * **Configurable key bindings** - **Right Shift** opens and closes the shell by
   default. It is registered with Minecraft and can be changed in the controls
   screen.
 
-The module registry ships empty on purpose. The cards in the shell are previews:
-they demonstrate the density and the styling of the interface but are not backed
-by real modules yet. Features are added one at a time and can then be bound to
-the card list.
+The module registry ships empty on purpose. The preview catalogue has been
+removed; new modules can be bound to the card list as they are implemented.
 
 ## Requirements
 
@@ -93,7 +95,7 @@ src/client/java/io/github/crossmod/client
 │   ├── DiscordLinkClient.java     Talks to the bot of the server
 │   └── DiscordChatCommands.java   The .link command of the chat
 ├── gui/                           The interface
-│   ├── screen/                    The full-window shell and the placeholder pages
+│   ├── screen/                    The floating shell and the placeholder pages
 │   ├── render/                    Drawing helpers and the captured menu backdrop
 │   └── theme/                     Colours, metrics and user settings
 
@@ -122,15 +124,15 @@ public final class ExampleModule extends Module {
 }
 ```
 
-The module is stored in `config/crossmod.json`. The current shell still renders
-its fixed preview list; binding real modules to the cards is the next step once
-the visual set has been pruned.
+The module is stored in `config/crossmod.json`. The preview catalogue has been
+removed from the shell; binding registered modules to the card grid is the next
+step as new modules are added.
 
 ## The Discord bot
 
 The server has its own bot, it lives in [`bot/`](bot/README.md) and is written
-in C# on .NET 8. It welcomes new members, counts them, hands out roles on
-reactions and links a Discord account to a Minecraft account.
+in C# on .NET 8. It welcomes the new members, hands out roles on reactions and
+links a Discord account to a Minecraft account.
 
 The mod and the bot talk to each other over a small HTTP interface. A player
 runs `/link` in Discord, types `.link <code>` in the chat of the game and the
@@ -157,32 +159,35 @@ address. A public address comes with the deployment, see
 ### Layout
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│  A   │  Search anything...        [All] [PvP] [HUD] ...  [X] │
-│      ├─────────────────────────┬────────────────────────────┤
-│ Mod  │ Damage Tint        (on) │ Hide Armor           (off) │
-│ ...  │ Recolor the hurt flash  │ Hide armor by slot         │
-│      │                         │                            │
-│ ...  │ Clean View         (on) │ Crosshair            (off) │
-│      │ Remove screen clutter   │ Draw your own crosshair    │
-│      │                         │                            │
-│ Edit │ ...                     │ ...                        │
-│Discord                                                       │
-└──────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                  Search anything...                     [X]   │
+│            [All] [PvP] [HUD] [Visuals] [Player]               │
+├─────────────┬─────────────────────────────────────────────────┤
+│  Modules    │                                                 │
+│  Settings   │                 No modules yet                 │
+│  Social     │          New modules will appear here.          │
+│  Wardrobe   │                                                 │
+│  Profiles   │                                                 │
+│             │                                                 │
+│  Edit HUD   │                                                 │
+│  Discord    │                                                 │
+└─────────────┴─────────────────────────────────────────────────┘
 ```
 
-* The panel has a fixed 108 unit sidebar, a 47 unit header and a two-column
-  content area. The two columns share the remaining width equally, with an
-  8 unit gutter between them.
-* The header holds the search field on the left, the filter pills on the right
-  and a separate close cell at the far right. The close cell is split from the
-  filters by a one pixel divider.
-* Every card is 49 units high with a 34 unit icon tile. Clicking a card toggles
-  its preview state; clicking a filter or typing in the search field rebuilds
-  the visible list.
-* The sidebar pages are placeholders in this shell. Only the Modules page is
-  fully populated; the other pages keep the same frame and title.
-* The grid scrolls with the mouse wheel when there are more cards than fit.
+* The whole interface is scaled to 80% and centred, so the panel keeps a clear
+  gap between itself and every window edge. The panel has a fixed 108 unit
+  sidebar, an 86 unit header and a two-column content area.
+* The full-width header holds the 300 unit search field in the upper middle,
+  with the filter pills centred below it. The close button sits in the top-right
+  corner. The old top-left logo has been removed.
+* The sidebar navigation starts below the header. The sidebar pages are
+  placeholders in this shell; the Modules page shows the empty state until new
+  modules are bound to the grid.
+* Every card is 49 units high with a 34 unit icon tile. The two columns share
+  the remaining width equally with an 8 unit gutter. The grid scrolls with the
+  mouse wheel when there are more cards than fit.
+* Clicking a filter or typing in the search field rebuilds the visible list.
+  The filter counts are zero while the registry is empty.
 
 ### The backdrop
 
@@ -192,9 +197,9 @@ A CrossMod screen does not draw the opaque vanilla menu background. Instead it:
 2. downscales it to 160 pixels wide and box-blurs it twice,
 3. draws the blurred texture opaquely over the whole viewport, so no earlier
    frame or UI can accumulate behind the glass,
-4. applies a forced dark magenta scrim, independent of the vanilla blur option,
-   and
-5. draws the panel, header, cards and text on top.
+4. applies a neutral dark scrim, independent of the vanilla blur option, so the
+   glass keeps its clarity without a red cast, and
+5. draws the scaled panel, header, cards and text on top.
 
 The HUD is hidden while the shell is open. The captured frame is refreshed every
 time the shell is opened, so it always reflects the current world.

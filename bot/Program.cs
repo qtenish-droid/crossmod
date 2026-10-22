@@ -47,11 +47,10 @@ MojangService mojang = new();
 DiscordRestClient rest = ((IRestClientProvider)client).RestClient;
 VerificationService verification = new(options, rest);
 AnnouncementService announcements = new(options, rest);
-MemberCountService memberCount = new(options, rest);
 ReactionRoleService reactionRoles = new(store, rest);
 WelcomeService welcome = new(options, rest);
 
-BotServices.Initialize(options, client, rest, store, links, mojang, verification, announcements, memberCount, reactionRoles, welcome);
+BotServices.Initialize(options, client, rest, store, links, mojang, verification, announcements, reactionRoles, welcome);
 
 builder.Services.AddSingleton(options);
 builder.Services.AddSingleton(client);
@@ -61,7 +60,6 @@ builder.Services.AddSingleton(links);
 builder.Services.AddSingleton(mojang);
 builder.Services.AddSingleton(verification);
 builder.Services.AddSingleton(announcements);
-builder.Services.AddSingleton(memberCount);
 builder.Services.AddSingleton(reactionRoles);
 builder.Services.AddSingleton(welcome);
 

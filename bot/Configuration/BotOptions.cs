@@ -30,9 +30,6 @@ public sealed class BotOptions {
 	/** The channel that welcomes new members. */
 	public ulong? WelcomeChannelId { get; set; }
 
-	/** The channel that shows the member count. */
-	public ulong? MemberCountChannelId { get; set; }
-
 	/** The channel that receives announcements and releases. */
 	public ulong? AnnouncementChannelId { get; set; }
 

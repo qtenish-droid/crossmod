@@ -36,14 +36,12 @@ public sealed class UtilityCommands : CrossModModule {
 	 */
 	[SlashCommand("server", "Show the member count of the server")]
 	public async Task ServerAsync() {
-		int members = 0;
 		string name = "The CrossMod server";
 
 		if (GuildId is ulong guildId) {
 			IGuild? guild = await BotServices.Rest.GetGuildAsync(guildId, true);
 
 			if (guild is not null) {
-				members = guild.ApproximateMemberCount ?? 0;
 				name = guild.Name;
 			}
 		}
@@ -51,7 +49,6 @@ public sealed class UtilityCommands : CrossModModule {
 		EmbedBuilder embed = new EmbedBuilder()
 				.WithTitle(name)
 				.WithColor(AnnouncementService.Accent)
-				.AddField("Members", members.ToString(), true)
 				.WithTimestamp(DateTimeOffset.UtcNow);
 
 		await RespondAsync(embed.Build());

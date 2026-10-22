@@ -10,7 +10,6 @@ It is written in C# on .NET 8 and uses [Discord.Net](https://github.com/discord-
 | Feature | Where |
 |---|---|
 | Welcome message for new members | `#welcome` channel |
-| Member counter | the name of the counter channel |
 | Reaction roles | every message can carry a rule |
 | Account linking | `/link` plus the `.link <code>` command in the game |
 | Announcements and releases | `/announce` and `/release`, or the build pipeline |
@@ -51,8 +50,8 @@ never overwritten by a variable of the host by accident.
 3. Open **Bot** in the sidebar and press **Reset Token**. The token is shown
    exactly once, it is the `CROSSMOD_DISCORD_TOKEN` of the bot.
 4. Under **Privileged Gateway Intents** switch on **Server Members Intent**.
-   The welcome messages and the member counter need it, and Discord only
-   hands it out to bots that are in at least one server.
+   The welcome messages need it, and Discord only hands it out to bots that
+   are in at least one server.
 5. Open **OAuth2 > URL Generator**, tick `bot` and `applications.commands` and
    use the permissions below. The generated link invites the bot.
 
@@ -62,10 +61,9 @@ never overwritten by a variable of the host by accident.
 | Read Message History | the reaction roles |
 | Add Reactions | the reaction roles |
 | Manage Roles | the verified role, the reaction roles |
-| Manage Channels | the member counter |
 | View Channel | reading the channels it posts in |
 
-The permission bitmask of that list is `2416004176`, so the link is
+The permission bitmask of that list is `2416004160`, so the link is
 
 ```
 https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=2416004176&scope=bot%20applications.commands
@@ -82,7 +80,6 @@ The file `bot/local.env` holds the same keys and is used on a local machine.
 | `CROSSMOD_API_KEY` | the shared secret of the HTTP endpoints, required |
 | `CROSSMOD_GUILD_ID` | the server the commands are registered in |
 | `CROSSMOD_WELCOME_CHANNEL_ID` | the channel that welcomes new members |
-| `CROSSMOD_MEMBER_COUNT_CHANNEL_ID` | the channel whose name is the member count |
 | `CROSSMOD_ANNOUNCEMENT_CHANNEL_ID` | the channel that receives the announcements |
 | `CROSSMOD_VERIFIED_ROLE_ID` | the role of a linked member |
 | `CROSSMOD_STAFF_ROLE_ID` | the role that may use the staff commands |
@@ -109,12 +106,10 @@ its own entry in the permissions of the channel:
 |---|---|
 | Send Messages | every channel the bot writes in |
 | View Channel | every channel the bot reads |
-| Manage Channels | the member counter, the bot renames it |
 | Manage Roles | the verified role and the reaction roles |
 
-The bot creates its three channels itself, with the permissions in place. They
-sit at the top of the server, because a channel inside a category that denies
-the management of the channels to `@everyone` may not be created by the bot.
+The bot does not touch any other channel, it never renames one and it never
+creates one.
 
 ## How the bot talks to Discord
 
@@ -133,7 +128,7 @@ commands, Discord refuses the registration before that.
 | `/link` | everybody | hands out the code that links the accounts |
 | `/unlink` | everybody | removes the link again |
 | `/profile` | everybody | shows the linked Minecraft account |
-| `/server` | everybody | shows the member count |
+| `/server` | everybody | shows the name of the server |
 | `/help` | everybody | lists the commands |
 | `/announce` | staff | posts an announcement |
 | `/release` | staff | posts a release |

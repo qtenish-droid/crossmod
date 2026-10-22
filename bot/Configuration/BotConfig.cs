@@ -54,7 +54,6 @@ public static class BotConfig {
 			ApiKey = First("CROSSMOD_API_KEY", "CrossMod:ApiKey") ?? string.Empty,
 			GitHubWebhookSecret = First("CROSSMOD_GITHUB_SECRET", "CrossMod:GitHubWebhookSecret"),
 			WelcomeChannelId = Number("CROSSMOD_WELCOME_CHANNEL_ID", "CrossMod:WelcomeChannelId"),
-			MemberCountChannelId = Number("CROSSMOD_MEMBER_COUNT_CHANNEL_ID", "CrossMod:MemberCountChannelId"),
 			AnnouncementChannelId = Number("CROSSMOD_ANNOUNCEMENT_CHANNEL_ID", "CrossMod:AnnouncementChannelId"),
 			VerifiedRoleId = Number("CROSSMOD_VERIFIED_ROLE_ID", "CrossMod:VerifiedRoleId"),
 			StaffRoleId = Number("CROSSMOD_STAFF_ROLE_ID", "CrossMod:StaffRoleId"),
