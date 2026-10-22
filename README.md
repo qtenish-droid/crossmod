@@ -137,16 +137,20 @@ runs `/link` in Discord, types `.link <code>` in the chat of the game and the
 bot grants the verified role.
 
 The address of the bot and the shared secret are read from the configuration
-file of the mod:
+file of the mod, `config/crossmod.json`:
 
 ```json
 {
   "discord": {
-    "api_url": "https://crossmod-bot.up.railway.app",
+    "api_url": "http://localhost:8080",
     "api_key": "a-long-random-string"
   }
 }
 ```
+
+While the bot runs on the same machine, `http://localhost:8080` is the
+address. A public address comes with the deployment, see
+[`bot/README.md`](bot/README.md).
 
 ## The interface
 
